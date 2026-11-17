@@ -34,7 +34,7 @@
     JazzCash / EasyPaisa: <b>0320-2609659</b> (Muhammad Younis)
   </div>
   <input type="text" id="shopInput" placeholder="اپنی دکان کا نام لکھیں">
-  <input type="text" id="keyInput" placeholder="لائسنس کوڈ درج کریں (مثلاً YUNUS-786)">
+  <input type="text" id="keyInput" placeholder="ایڈمن سے حاصل کردہ خفیہ کوڈ درج کریں">
   <button onclick="activateApp()">✅ ایپ فعال کریں</button>
   <button class="green" onclick="sendKeyReq()" style="margin-top:8px;">📲 واٹس ایپ پر کوڈ منگوائیں</button>
 </div>
@@ -123,7 +123,12 @@
   </div>
 </div>
 <script>
-const VALID_KEYS = ["YUNUS-786", "DUKAN-PRO", "SMART-100"];
+function isValidUniqueKey(k) {
+  if (!/^PK-[0-9]{4}$/.test(k)) return false;
+  const digits = k.slice(3).split('').map(Number);
+  const sum = digits.reduce((a, b) => a + b, 0);
+  return sum === 19;
+}
 let db = JSON.parse(localStorage.getItem("smart_pos_db")) || { stock: [], khata: [], suppliers: [], salesTotal: 0, profitTotal: 0 };
 let cart = [];
 
@@ -132,7 +137,7 @@ if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js');
 function checkAuth() {
   const savedKey = localStorage.getItem("pos_license_key");
   const savedShop = localStorage.getItem("pos_shop_name");
-  if (savedKey && VALID_KEYS.includes(savedKey)) {
+  if (savedKey && isValidUniqueKey(savedKey)) {
     document.getElementById("lockScreen").classList.add("hidden");
     document.getElementById("mainApp").classList.remove("hidden");
     document.getElementById("shopHeader").innerText = "🛒 " + (savedShop || "میری دکان");
@@ -143,7 +148,7 @@ function activateApp() {
   const shop = document.getElementById("shopInput").value.trim();
   const key = document.getElementById("keyInput").value.trim().toUpperCase();
   if (!shop) return alert("اپنی دکان کا نام لکھیں!");
-  if (VALID_KEYS.includes(key)) {
+  if (isValidUniqueKey(key)) {
     localStorage.setItem("pos_license_key", key);
     localStorage.setItem("pos_shop_name", shop);
     checkAuth();

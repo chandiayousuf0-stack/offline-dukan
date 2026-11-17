@@ -1,0 +1,15 @@
+{
+  "name": "Smart Dukan POS Offline",
+  "short_name": "Smart Dukan",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976D2",
+  "icons": [
+    {
+      "src": "https://flaticon.com",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Dukan POS (Offline)</title>
+<title>Smart Dukan & Mandi POS (Offline v2.0)</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1976D2">
 <style>
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f6f9; margin: 0; padding: 12px; color: #222; }
   .card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-  h2, h3 { margin-top: 0; color: #1976D2; }
-  input, select { width: 100%; padding: 10px; margin: 6px 0 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
-  button { width: 100%; padding: 12px; background: #1976D2; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+  h2, h3, h4 { margin-top: 0; color: #1976D2; }
+  input, select { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+  button { width: 100%; padding: 12px; background: #1976D2; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
   button.green { background: #25D366; }
   button.red { background: #d32f2f; }
   button.gray { background: #555; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .grid button { height: 90px; font-size: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-  th, td { border-bottom: 1px solid #ddd; padding: 8px; text-align: right; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  th, td { border-bottom: 1px solid #ddd; padding: 7px; text-align: right; }
   th { background: #e3f2fd; }
   .hidden { display: none; }
   .badge { background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
@@ -26,24 +26,24 @@
 </style>
 </head>
 <body>
+
 <div id="lockScreen" class="card">
-  <h2>🔐 Smart Dukan POS (Offline)</h2>
-  <p>یہ مکمل آف لائن دکان مینجمنٹ سسٹم ہے۔ ایپ چالو کرنے کے لیے اپنا <b>لائسنس کوڈ</b> درج کریں:</p>
+  <h2>🔐 Smart Dukan & Mandi POS (v2.0)</h2>
+  <p>مکمل آف لائن دکان و آڑھت مینجمنٹ سسٹم۔ ایپ چالو کرنے کے لیے اپنا <b>لائسنس کوڈ</b> درج کریں:</p>
   <div style="background:#fff3cd; padding:10px; border-radius:8px; margin-bottom:10px; font-size:14px;">
     💳 <b>لائسنس کوڈ فیس (100 روپے):</b><br>
     JazzCash / EasyPaisa: <b>0320-2609659</b> (Muhammad Younis)
   </div>
-  <input type="text" id="shopInput" placeholder="اپنی دکان کا نام لکھیں">
+  <input type="text" id="shopInput" placeholder="اپنی دکان یا آڑھت کا نام لکھیں">
   <input type="text" id="keyInput" placeholder="ایڈمن سے حاصل کردہ خفیہ کوڈ درج کریں">
   <button onclick="activateApp()">✅ ایپ فعال کریں</button>
   <button class="green" onclick="sendKeyReq()" style="margin-top:8px;">📲 واٹس ایپ پر کوڈ منگوائیں</button>
 </div>
-
 <div id="mainApp" class="hidden">
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
       <h3 id="shopHeader" style="margin:0;">🛒 میری دکان</h3>
-      <span class="badge">⚡ 100% آف لائن موڈ فعال</span>
+      <span class="badge">⚡ 100% آف لائن موڈ (v2.0)</span>
     </div>
     <button id="homeBtn" class="gray hidden" style="width:auto; padding:8px 14px;" onclick="showPage('home')">🏠 ہوم</button>
   </div>
@@ -51,18 +51,21 @@
   <div id="page_home" class="card">
     <h3>📌 مین ڈیش بورڈ</h3>
     <div class="grid">
-      <button onclick="showPage('billing')">🧾<br>بلنگ و واٹس ایپ</button>
-      <button onclick="showPage('purchase')">🚚<br>خریداری و سپلائر</button>
-      <button onclick="showPage('khata')">📒<br>کسٹمر ادھار کھاتہ</button>
-      <button onclick="showPage('stock')">📦<br>موجودہ اسٹاک</button>
-      <button onclick="showPage('pnl')">📈<br>نفع و نقصان حساب</button>
-      <button onclick="showPage('backup')">💾<br>بیک اپ و رائے</button>
+      <button onclick="showPage('billing')">🧾<br>کسٹمر بلنگ<br>(مقررہ یا موقع کا ریٹ)</button>
+      <button onclick="showPage('purchase')">🚚<br>سپلائر خریداری بل<br>(نقد + ادھار تقسیم)</button>
+      <button onclick="showPage('stock')">📦<br>موجودہ اسٹاک<br>(پرانا مال درج کریں)</button>
+      <button onclick="showPage('khata')">📒<br>کسٹمر ادھار کھاتہ<br>(لینی باقی رقم)</button>
+      <button onclick="showPage('pnl')">📈<br>نفع و نقصان<br>مکمل حساب</button>
+      <button onclick="showPage('backup')">💾<br>بیک اپ و<br>لاگ آؤٹ</button>
     </div>
   </div>
+
+  <!-- صفحہ 1: بلنگ (مقررہ اور متغیر دونوں قیمتوں کے ساتھ) -->
   <div id="page_billing" class="card hidden">
     <h3>🧾 نیا کسٹمر بل بنائیں</h3>
-    <select id="billItemSelect"></select>
-    <input type="number" id="billQty" placeholder="تعداد درج کریں" value="1" min="1">
+    <select id="billItemSelect" onchange="onSelectBillItem()"></select>
+    <input type="number" id="billQty" placeholder="تعداد / وزن (من یا بوری)" value="1" min="0.1" step="any">
+    <input type="number" id="billSellPrice" placeholder="بیچنے کا ریٹ (موقع پر تبدیل کر سکتے ہیں)" step="any">
     <button onclick="addToCart()">➕ بل میں شامل کریں</button>
     <div id="cartArea" class="hidden" style="margin-top:12px;">
       <h4>تیار کردہ بل:</h4>
@@ -74,27 +77,47 @@
     </div>
   </div>
 
+  <!-- صفحہ 2: موجودہ اسٹاک اور پرانا مال درج کرنے کا فارم -->
+  <div id="page_stock" class="card hidden">
+    <h3>📦 موجودہ اسٹاک (پرانا مال شامل کریں)</h3>
+    <p style="font-size:13px; color:#555;">دکان میں پہلے سے موجود سامان یا گندم وغیرہ یہاں درج کریں (قیمتِ فروخت خالی چھوڑ سکتے ہیں):</p>
+    <input type="text" id="stName" placeholder="چیز / جنس کا نام (مثلاً گندم، چینی)">
+    <input type="number" id="stQty" placeholder="موجودہ تعداد / وزن" step="any">
+    <input type="number" id="stBuy" placeholder="فی یونٹ قیمتِ خرید (لازمی)" step="any">
+    <input type="number" id="stSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - آڑھت کے لیے خالی چھوڑیں)" step="any">
+    <button onclick="addDirectStock()">💾 اسٹاک میں شامل کریں</button>
+    <table id="stockTable"><thead><tr><th>چیز</th><th>خرید</th><th>فروخت</th><th>بقایا</th></tr></thead><tbody></tbody></table>
+  </div>
+  <!-- صفحہ 3: سپلائر مجموعی بل (کچھ نقد + کچھ ادھار) -->
   <div id="page_purchase" class="card hidden">
-    <h3>🚚 مال خریداری و سپلائر کھاتہ</h3>
-    <input type="text" id="supName" placeholder="سپلائر / ہول سیلر کا نام">
-    <input type="text" id="purItem" placeholder="چیز کا نام">
-    <input type="number" id="purQty" placeholder="مقدار / تعداد">
-    <input type="number" id="purBuy" placeholder="فی یونٹ قیمتِ خرید">
-    <input type="number" id="purSell" placeholder="فی یونٹ قیمتِ فروخت">
-    <select id="purType">
-      <option value="cash">نقد ادائیگی (Paid)</option>
-      <option value="credit">ادھار پر مال لیا (Credit - دینی باقی)</option>
-    </select>
-    <button onclick="savePurchase()">✅ خریداری محفوظ کریں و اسٹاک بڑھائیں</button>
-    <h4>🏢 سپلائرز کا بقایا کھاتہ:</h4>
+    <h3>🚚 سپلائر / زمیندار خریداری بل</h3>
+    <p style="font-size:13px; color:#555;">پہلے تمام خریدی گئی چیزیں فہرست میں ڈالیں، پھر نیچے کل بل میں سے نقد اور ادھار درج کریں:</p>
+    <input type="text" id="purItem" placeholder="چیز / جنس کا نام">
+    <input type="number" id="purQty" placeholder="مقدار / تعداد" step="any">
+    <input type="number" id="purBuy" placeholder="فی یونٹ قیمتِ خرید" step="any">
+    <input type="number" id="purSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - خالی چھوڑ سکتے ہیں)" step="any">
+    <button class="gray" onclick="addPurItem()">➕ خریداری بل میں چیز ڈالیں</button>
+
+    <div id="purCartBox" class="hidden" style="background:#f8f9fa; padding:10px; border-radius:8px; margin-top:10px; border:1px solid #ddd;">
+      <h4>📋 زیرِ تیاری خریداری بل:</h4>
+      <table id="purCartTable"><thead><tr><th>چیز</th><th>مقدار</th><th>ریٹ</th><th>کل</th></tr></thead><tbody></tbody></table>
+      <h4 id="purGrandTotal" style="margin-top:8px;">کل بل: 0 روپے</h4>
+      <input type="text" id="supName" placeholder="سپلائر / زمیندار کا نام (لازمی)">
+      <input type="number" id="purPaidCash" placeholder="اس بل میں سے کتنے نقد ادا کیے؟ (مثلاً 0 یا کچھ رقم)" step="any">
+      <button onclick="finalizePurchase()">✅ بل مکمل کریں (اسٹاک و کھاتہ اپ ڈیٹ)</button>
+      <button class="red" onclick="clearPurCart()">❌ فہرست صاف کریں</button>
+    </div>
+
+    <h4 style="margin-top:15px;">🏢 سپلائرز / زمینداروں کا بقایا کھاتہ:</h4>
     <table id="supTable"><thead><tr><th>سپلائر</th><th>دینی باقی</th><th>عمل</th></tr></thead><tbody></tbody></table>
   </div>
 
+  <!-- صفحہ 4: کسٹمر ادھار کھاتہ -->
   <div id="page_khata" class="card hidden">
     <h3>📒 کسٹمر ادھار کھاتہ</h3>
     <input type="text" id="kName" placeholder="گاہک کا نام">
     <input type="text" id="kPhone" placeholder="واٹس ایپ نمبر (03001234567)">
-    <input type="number" id="kAmount" placeholder="رقم درج کریں">
+    <input type="number" id="kAmount" placeholder="رقم درج کریں" step="any">
     <select id="kType">
       <option value="add">ادھار دیا (+)</option>
       <option value="sub">رقم وصول کی (-)</option>
@@ -103,34 +126,33 @@
     <table id="khataTable"><thead><tr><th>گاہک</th><th>فون</th><th>بقایا</th><th>واٹس ایپ</th></tr></thead><tbody></tbody></table>
   </div>
 
-  <div id="page_stock" class="card hidden">
-    <h3>📦 موجودہ اسٹاک</h3>
-    <table id="stockTable"><thead><tr><th>چیز</th><th>خرید</th><th>فروخت</th><th>بقایا</th></tr></thead><tbody></tbody></table>
-  </div>
-
+  <!-- صفحہ 5: نفع و نقصان -->
   <div id="page_pnl" class="card hidden">
     <h3>📈 نفع و نقصان اور کاروباری خلاصہ</h3>
     <div id="pnlSummary"></div>
   </div>
 
+  <!-- صفحہ 6: بیک اپ، رائے اور لاگ آؤٹ -->
   <div id="page_backup" class="card hidden">
-    <h3>💾 ڈیٹا بیک اپ و ایڈمن رابطہ</h3>
-    <p>اپنے موبائل کے ڈیٹا کی محفوظ فائل ڈاؤن لوڈ کریں یا واپس بحال کریں:</p>
+    <h3>💾 ڈیٹا بیک اپ و سیٹنگز</h3>
     <button onclick="downloadBackup()">⬇️ بیک اپ فائل ڈاؤن لوڈ کریں</button>
     <input type="file" id="restoreFile" accept=".json" onchange="restoreBackup(event)" style="margin-top:10px;">
     <hr>
     <button class="green" onclick="sendFeedbackWa()">💬 ایڈمن کو رائے یا اپ ڈیٹ درخواست بھیجیں</button>
+    <hr>
+    <button class="red" onclick="logoutApp()">🔒 ایپ لاک / لاگ آؤٹ کریں</button>
   </div>
 </div>
 <script>
 function isValidUniqueKey(k) {
   if (!/^PK-[0-9]{4}$/.test(k)) return false;
   const digits = k.slice(3).split('').map(Number);
-  const sum = digits.reduce((a, b) => a + b, 0);
-  return sum === 19;
+  return digits.reduce((a, b) => a + b, 0) === 19;
 }
+
 let db = JSON.parse(localStorage.getItem("smart_pos_db")) || { stock: [], khata: [], suppliers: [], salesTotal: 0, profitTotal: 0 };
 let cart = [];
+let purCart = [];
 
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
 
@@ -157,9 +179,16 @@ function activateApp() {
   }
 }
 
+function logoutApp() {
+  if (confirm("کیا آپ واقعی ایپ لاک / لاگ آؤٹ کرنا چاہتے ہیں؟ (آپ کا ڈیٹا محفوظ رہے گا)")) {
+    localStorage.removeItem("pos_license_key");
+    location.reload();
+  }
+}
+
 function sendKeyReq() {
   const shop = document.getElementById("shopInput").value.trim() || "نئی دکان";
-  const msg = encodeURIComponent(`السلام علیکم! مجھے اپنی دکان (${shop}) کے لیے Offline POS ایپ کا لائسنس کوڈ چاہیے۔`);
+  const msg = encodeURIComponent(`السلام علیکم! مجھے اپنی دکان (${shop}) کے لیے Offline POS v2.0 کا لائسنس کوڈ چاہیے۔`);
   window.open(`https://wa.me{msg}`, "_blank");
 }
 
@@ -176,30 +205,95 @@ function showPage(page) {
   if (page === "pnl") renderPnL();
 }
 
-function savePurchase() {
-  const sup = document.getElementById("supName").value.trim();
+function addDirectStock() {
+  const name = document.getElementById("stName").value.trim();
+  const qty = parseFloat(document.getElementById("stQty").value);
+  const buy = parseFloat(document.getElementById("stBuy").value);
+  const sellVal = document.getElementById("stSell").value.trim();
+  const sell = sellVal ? parseFloat(sellVal) : 0;
+
+  if (!name || !qty || !buy) return alert("چیز کا نام، مقدار اور قیمتِ خرید لازمی لکھیں!");
+  let exItem = db.stock.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (exItem) { exItem.qty += qty; exItem.buy = buy; if (sell > 0) exItem.sell = sell; }
+  else { db.stock.push({ name, qty, buy, sell }); }
+
+  saveDB();
+  document.getElementById("stName").value = "";
+  document.getElementById("stQty").value = "";
+  document.getElementById("stBuy").value = "";
+  document.getElementById("stSell").value = "";
+  alert("✅ موجودہ اسٹاک محفوظ ہو گیا!");
+  renderStock();
+}
+
+function addPurItem() {
   const item = document.getElementById("purItem").value.trim();
-  const qty = parseInt(document.getElementById("purQty").value);
+  const qty = parseFloat(document.getElementById("purQty").value);
   const buy = parseFloat(document.getElementById("purBuy").value);
-  const sell = parseFloat(document.getElementById("purSell").value);
-  const type = document.getElementById("purType").value;
-  if (!sup || !item || !qty || !buy || !sell) return alert("تمام خانے پُر کریں!");
+  const sellVal = document.getElementById("purSell").value.trim();
+  const sell = sellVal ? parseFloat(sellVal) : 0;
 
-  let exItem = db.stock.find(i => i.name.toLowerCase() === item.toLowerCase());
-  if (exItem) { exItem.qty += qty; exItem.buy = buy; exItem.sell = sell; }
-  else { db.stock.push({ name: item, qty, buy, sell }); }
+  if (!item || !qty || !buy) return alert("چیز کا نام، مقدار اور قیمتِ خرید لازمی لکھیں!");
+  purCart.push({ item, qty, buy, sell, total: qty * buy });
+  document.getElementById("purItem").value = "";
+  document.getElementById("purQty").value = "";
+  document.getElementById("purBuy").value = "";
+  document.getElementById("purSell").value = "";
+  renderPurCart();
+}
 
-  if (type === "credit") {
+function renderPurCart() {
+  const box = document.getElementById("purCartBox");
+  if (!purCart.length) { box.classList.add("hidden"); return; }
+  box.classList.remove("hidden");
+  let grand = 0;
+  document.querySelector("#purCartTable tbody").innerHTML = purCart.map(p => {
+    grand += p.total;
+    return `<tr><td>${p.item}</td><td>${p.qty}</td><td>${p.buy}</td><td>${p.total}</td></tr>`;
+  }).join("");
+  document.getElementById("purGrandTotal").innerText = `کل بل: ${grand} روپے`;
+}
+
+function clearPurCart() { purCart = []; renderPurCart(); }
+
+function finalizePurchase() {
+  const sup = document.getElementById("supName").value.trim();
+  const paidCash = parseFloat(document.getElementById("purPaidCash").value) || 0;
+  if (!sup) return alert("سپلائر یا زمیندار کا نام لکھیں!");
+  if (!purCart.length) return alert("بل میں کم از کم ایک چیز شامل کریں!");
+
+  let grandTotal = 0;
+  purCart.forEach(p => {
+    grandTotal += p.total;
+    let exItem = db.stock.find(i => i.name.toLowerCase() === p.item.toLowerCase());
+    if (exItem) {
+      exItem.qty += p.qty;
+      exItem.buy = p.buy;
+      if (p.sell > 0) exItem.sell = p.sell;
+    } else {
+      db.stock.push({ name: p.item, qty: p.qty, buy: p.buy, sell: p.sell });
+    }
+  });
+
+  const remainingDebt = Math.max(0, grandTotal - paidCash);
+  if (remainingDebt > 0) {
     let exSup = db.suppliers.find(s => s.name.toLowerCase() === sup.toLowerCase());
-    if (exSup) exSup.payable += (qty * buy);
-    else db.suppliers.push({ name: sup, payable: qty * buy });
+    if (exSup) exSup.payable += remainingDebt;
+    else db.suppliers.push({ name: sup, payable: remainingDebt });
   }
-  saveDB(); alert("✅ مال اسٹاک میں شامل ہو گیا!");
+
+  saveDB();
+  purCart = [];
+  document.getElementById("supName").value = "";
+  document.getElementById("purPaidCash").value = "";
+  renderPurCart();
   renderSuppliers();
+  alert(`✅ بل محفوظ ہو گیا! کل بل: ${grandTotal} | نقد ادا: ${paidCash} | ادھار باقی: ${remainingDebt} روپے`);
 }
 function renderSuppliers() {
-  const tbody = document.querySelector("#supTable tbody");
-  tbody.innerHTML = db.suppliers.map((s, idx) => `<tr><td>${s.name}</td><td>${s.payable} روپے</td><td><button style="padding:4px;" onclick="paySup(${idx})">ادا کریں</button></td></tr>`).join("");
+  document.querySelector("#supTable tbody").innerHTML = db.suppliers.map((s, idx) =>
+    `<tr><td>${s.name}</td><td><b>${s.payable} روپے</b></td><td><button style="padding:4px;" onclick="paySup(${idx})">رقم ادا کریں</button></td></tr>`
+  ).join("");
 }
 
 function paySup(idx) {
@@ -209,21 +303,45 @@ function paySup(idx) {
 
 function renderBilling() {
   const sel = document.getElementById("billItemSelect");
-  sel.innerHTML = db.stock.filter(i => i.qty > 0).map((i, idx) => `<option value="${idx}">${i.name} (قیمت: ${i.sell} | اسٹاک: ${i.qty})</option>`).join("");
+  const avail = db.stock.filter(i => i.qty > 0);
+  sel.innerHTML = avail.map((i, idx) => {
+    const rateTxt = i.sell > 0 ? `ریٹ: ${i.sell}` : "ریٹ موقع پر طے ہوگا";
+    return `<option value="${idx}">${i.name} (${rateTxt} | اسٹاک: ${i.qty})</option>`;
+  }).join("");
+  onSelectBillItem();
+}
+
+function onSelectBillItem() {
+  const avail = db.stock.filter(i => i.qty > 0);
+  const idx = document.getElementById("billItemSelect").value;
+  const item = avail[idx];
+  const priceBox = document.getElementById("billSellPrice");
+  if (item) {
+    priceBox.value = item.sell > 0 ? item.sell : "";
+    priceBox.placeholder = item.sell > 0 ? `مقررہ ریٹ: ${item.sell} (تبدیل بھی کر سکتے ہیں)` : `خرید: ${item.buy} — یہاں بیچنے کا ریٹ لکھیں`;
+  }
 }
 
 function addToCart() {
   const available = db.stock.filter(i => i.qty > 0);
   const idx = document.getElementById("billItemSelect").value;
-  const qty = parseInt(document.getElementById("billQty").value);
+  const qty = parseFloat(document.getElementById("billQty").value);
+  const sellPrice = parseFloat(document.getElementById("billSellPrice").value);
   const item = available[idx];
-  if (!item || qty > item.qty) return alert("اتنا اسٹاک موجود نہیں!");
+
+  if (!item || !qty || qty > item.qty) return alert("اتنا اسٹاک موجود نہیں!");
+  if (!sellPrice || sellPrice <= 0) return alert("براہ کرم بیچنے کا ریٹ (قیمتِ فروخت) درج کریں!");
+
   item.qty -= qty;
-  const total = item.sell * qty;
-  const profit = (item.sell - item.buy) * qty;
-  db.salesTotal += total; db.profitTotal += profit;
-  cart.push({ name: item.name, qty, price: item.sell, total });
-  saveDB(); renderBilling(); updateBillPreview();
+  const total = sellPrice * qty;
+  const profit = (sellPrice - item.buy) * qty;
+  db.salesTotal += total;
+  db.profitTotal += profit;
+
+  cart.push({ name: item.name, qty, price: sellPrice, total });
+  saveDB();
+  renderBilling();
+  updateBillPreview();
 }
 
 function updateBillPreview() {
@@ -260,8 +378,7 @@ function updateKhata() {
 }
 
 function renderKhata() {
-  const tbody = document.querySelector("#khataTable tbody");
-  tbody.innerHTML = db.khata.map(c => {
+  document.querySelector("#khataTable tbody").innerHTML = db.khata.map(c => {
     let ph = (c.phone || "").replace(/[^0-9]/g, "");
     if (ph.startsWith("03")) ph = "92" + ph.substring(1);
     const msg = encodeURIComponent(`السلام علیکم ${c.name} صاحب، آپ کے ذمہ بقایا ادھار رقم ${c.balance} روپے ہے۔ شکریہ!`);
@@ -270,7 +387,10 @@ function renderKhata() {
 }
 
 function renderStock() {
-  document.querySelector("#stockTable tbody").innerHTML = db.stock.map(i => `<tr><td>${i.name}</td><td>${i.buy}</td><td>${i.sell}</td><td><b>${i.qty}</b></td></tr>`).join("");
+  document.querySelector("#stockTable tbody").innerHTML = db.stock.map(i => {
+    const sellTxt = i.sell > 0 ? i.sell : "<i>موقع پر طے</i>";
+    return `<tr><td>${i.name}</td><td>${i.buy}</td><td>${sellTxt}</td><td><b>${i.qty}</b></td></tr>`;
+  }).join("");
 }
 
 function renderPnL() {
@@ -300,7 +420,7 @@ function restoreBackup(e) {
 }
 
 function sendFeedbackWa() {
-  const msg = encodeURIComponent("السلام علیکم! Offline POS ایپ کے حوالے سے میری رائے / اپ ڈیٹ کی درخواست:");
+  const msg = encodeURIComponent("السلام علیکم! Offline POS v2.0 کے حوالے سے میری رائے / اپ ڈیٹ کی درخواست:");
   window.open(`https://wa.me{msg}`, "_blank");
 }
 

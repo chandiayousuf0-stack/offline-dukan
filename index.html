@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Dukan & Mandi ERP (Offline v3.1)</title>
+<title>Smart Dukan & Mandi ERP (Offline v3.2)</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1976D2">
 <style>
@@ -32,7 +32,7 @@
 <body>
 
 <div id="lockScreen" class="card">
-  <h2>🔐 Smart Dukan & Mandi ERP (v3.1)</h2>
+  <h2>🔐 Smart Dukan & Mandi ERP (v3.2)</h2>
   <p>مکمل آف لائن دکان و آڑھت مینجمنٹ سسٹم۔ ایپ چالو کرنے کے لیے اپنا <b>خفیہ لائسنس کوڈ</b> درج کریں:</p>
   <div style="background:#fff3cd; padding:10px; border-radius:8px; margin-bottom:10px; font-size:14px;">
     💳 <b>لائسنس کوڈ فیس (100 روپے):</b><br>
@@ -48,7 +48,7 @@
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
       <h3 id="shopHeader" style="margin:0;">🛒 میری دکان</h3>
-      <span class="badge">⚡ 100% آف لائن موڈ (v3.1)</span>
+      <span class="badge">⚡ 100% آف لائن موڈ (v3.2)</span>
     </div>
     <button type="button" id="homeBtn" class="gray hidden" style="width:auto; padding:8px 14px;" onclick="showPage('home')">🏠 ہوم</button>
   </div>
@@ -75,6 +75,34 @@
     <div id="cartArea" class="hidden" style="margin-top:12px;">
       <h4>📄 تیار کردہ بل (Receipt):</h4>
       <pre id="billPreview" style="background:#f8f9fa; padding:10px; border-radius:8px; white-space:pre-wrap; border:1px dashed #999;"></pre>
+      
+      <div style="background:#fff8e1; border:1px solid #ffe082; padding:10px; border-radius:8px; margin:10px 0;">
+        <h4 style="margin-bottom:6px; color:#e65100;">💳 بل کی ادائیگی کی صورت منتخب کریں:</h4>
+        <select id="billPayMode" onchange="toggleBillUdharBox()">
+          <option value="cash">1️⃣ مکمل نقد بل (Full Cash Paid)</option>
+          <option value="udhar">2️⃣ ادھار / جزوی نقد بل (کھاتے میں درج کریں)</option>
+        </select>
+
+        <div id="billUdharBox" class="hidden" style="margin-top:8px;">
+          <select id="billCustType" onchange="toggleBillNewCust()">
+            <option value="existing">پہلے سے رجسٹرڈ گاہک چنیں</option>
+            <option value="new">نیا گاہک درج کریں</option>
+          </select>
+
+          <div id="billExistingCustDiv">
+            <select id="billExistingCustSel" onchange="fillBillCustPhone()"></select>
+          </div>
+
+          <div id="billNewCustDiv" class="hidden">
+            <input type="text" id="billNewCustName" placeholder="نئے گاہک کا پورا نام (لازمی)">
+            <input type="text" id="billNewCustPhone" placeholder="واٹس ایپ نمبر (03001234567)">
+          </div>
+
+          <input type="number" id="billCashReceived" placeholder="اس بل میں سے کتنے نقد وصول ہوئے؟ (مکمل ادھار ہو تو 0 لکھیں)" value="0" min="0" step="any">
+          <button type="button" onclick="saveBillToKhata()">💾 ادھار کھاتہ و ہسٹری میں محفوظ کریں</button>
+        </div>
+      </div>
+
       <button type="button" class="orange" onclick="copyBillText()">📋 بل کاپی کریں (Copy Bill)</button>
       <input type="text" id="custWaPhone" placeholder="گاہک کا واٹس ایپ نمبر (مثلاً 03001234567)" style="margin-top:8px;">
       <button type="button" class="green" onclick="sendBillWhatsApp()">🟢 واٹس ایپ پر بل بھیجیں</button>
@@ -159,7 +187,7 @@
   <div id="page_backup" class="card hidden">
     <h3>🆕 ورژن 3.1 اپ ڈیٹ تفصیل و بیک اپ</h3>
     <div style="background:#e3f2fd; padding:10px; border-radius:8px; font-size:13px; margin-bottom:12px;">
-      <b>نئی اپ ڈیٹس (v3.1):</b><br>
+      <b>نئی اپ ڈیٹس (v3.2):</b><br>
       • <b>مکمل کھاتہ ہسٹری:</b> گاہک کا نام ایک بار درج کریں، وصولی فہرست سے چن کر کریں اور مکمل لیجر دیکھیں۔<br>
       • <b>بل کاپی بٹن:</b> بلنگ میں فوری کاپی، واٹس ایپ اور پرنٹ تینوں بٹن موجود ہیں۔<br>
       • <b>آڑھت و سپلائر بل:</b> مجموعی خریداری بل (نقد + ادھار) اور موقع کے ریٹ پر بلنگ۔
@@ -225,7 +253,7 @@ function logoutApp() {
 
 function sendKeyReq() {
   var shop = document.getElementById("shopInput").value.trim() || "نئی دکان";
-  var msg = encodeURIComponent("السلام علیکم! مجھے اپنی دکان (" + shop + ") کے لیے Offline POS v3.1 کا لائسنس کوڈ چاہیے۔");
+  var msg = encodeURIComponent("السلام علیکم! مجھے اپنی دکان (" + shop + ") کے لیے Offline POS v3.2 کا لائسنس کوڈ چاہیے۔");
   window.open("https://wa.me" + msg, "_blank");
 }
 
@@ -392,7 +420,99 @@ function sendBillWhatsApp() {
   window.open(ph ? "https://wa.me" + ph + "?text=" + txt : "https://wa.me?text=" + txt, "_blank");
 }
 
-function clearCart() { cart = new Array(); document.getElementById("cartArea").classList.add("hidden"); }
+var billSavedToKhata = false;
+
+function toggleBillUdharBox() {
+  var mode = document.getElementById("billPayMode").value;
+  var box = document.getElementById("billUdharBox");
+  box.classList.toggle("hidden", mode !== "udhar");
+  if (mode === "udhar") {
+    var sel = document.getElementById("billExistingCustSel");
+    if (!db.khata.length) {
+      sel.innerHTML = "<option value=''>کوئی پرانا گاہک نہیں (نیچے نیا گاہک چنیں)</option>";
+    } else {
+      sel.innerHTML = db.khata.map(function(c, idx) {
+        return "<option value='" + idx + "'>" + c.name + " (بقایا: " + c.balance + ")</option>";
+      }).join("");
+      fillBillCustPhone();
+    }
+  }
+}
+
+function toggleBillNewCust() {
+  var t = document.getElementById("billCustType").value;
+  document.getElementById("billExistingCustDiv").classList.toggle("hidden", t !== "existing");
+  document.getElementById("billNewCustDiv").classList.toggle("hidden", t !== "new");
+}
+
+function fillBillCustPhone() {
+  var val = document.getElementById("billExistingCustSel").value;
+  if (val !== "" && db.khata.at(parseInt(val, 10))) {
+    document.getElementById("custWaPhone").value = db.khata.at(parseInt(val, 10)).phone || "";
+  }
+}
+
+function saveBillToKhata() {
+  if (billSavedToKhata) { alert("⚠️ یہ بل پہلے ہی کھاتے میں محفوظ ہو چکا ہے!"); return; }
+  var grand = 0;
+  var itemSummary = new Array();
+  cart.forEach(function(c) {
+    grand += c.total;
+    itemSummary.push(c.name + " (" + c.qty + "x" + c.price + ")");
+  });
+
+  var cashRec = parseFloat(document.getElementById("billCashReceived").value) || 0;
+  if (cashRec > grand) { alert("نقد وصولی کل بل سے زیادہ نہیں ہو سکتی!"); return; }
+  var udharAmt = grand - cashRec;
+
+  var cType = document.getElementById("billCustType").value;
+  var custObj = null;
+
+  if (cType === "existing") {
+    var val = document.getElementById("billExistingCustSel").value;
+    if (val === "" || !db.khata.at(parseInt(val, 10))) { alert("پہلے گاہک منتخب کریں یا نیا گاہک درج کریں!"); return; }
+    custObj = db.khata.at(parseInt(val, 10));
+  } else {
+    var newName = document.getElementById("billNewCustName").value.trim();
+    var newPhone = document.getElementById("billNewCustPhone").value.trim();
+    if (!newName) { alert("نئے گاہک کا نام لکھنا لازمی ہے!"); return; }
+    var already = db.khata.find(function(x) { return x.name.toLowerCase() === newName.toLowerCase(); });
+    if (already) {
+      custObj = already;
+    } else {
+      custObj = { name: newName, phone: newPhone, balance: 0 };
+      db.khata.push(custObj);
+    }
+    if (newPhone) document.getElementById("custWaPhone").value = newPhone;
+  }
+
+  custObj.balance += udharAmt;
+  var dtStr = new Date().toLocaleString('en-PK');
+  var fullDetail = "بل اشیاء: " + itemSummary.join(", ") + " | کل بل: " + grand + " | نقد: " + cashRec + " | ادھار: " + udharAmt;
+  db.khataHistory.push({
+    name: custObj.name,
+    type: fullDetail,
+    amount: udharAmt,
+    dt: dtStr
+  });
+
+  saveDB();
+  billSavedToKhata = true;
+
+  var prev = document.getElementById("billPreview").innerText;
+  prev += "\n━━━━━━━━━━━━━━\n👤 گاہک: " + custObj.name + "\n💵 نقد وصول: " + cashRec + " روپے\n📒 نیا ادھار درج: " + udharAmt + " روپے\n💰 کل بقایا کھاتہ: " + custObj.balance + " روپے";
+  document.getElementById("billPreview").innerText = prev;
+
+  alert("✅ مکمل تفصیل کے ساتھ '" + custObj.name + "' کے کھاتے میں محفوظ ہو گیا!");
+}
+
+function clearCart() {
+  cart = new Array();
+  billSavedToKhata = false;
+  document.getElementById("billPayMode").value = "cash";
+  document.getElementById("billUdharBox").classList.add("hidden");
+  document.getElementById("cartArea").classList.add("hidden");
+}
 function switchKhataTab(n) {
   for (var i = 1; i <= 3; i++) {
     document.getElementById("ktab" + i).classList.toggle("hidden", i !== n);
@@ -518,7 +638,7 @@ function restoreBackup(e) {
 }
 
 function sendFeedbackWa() {
-  var txt = document.getElementById("fbText").value.trim() || "Offline POS v3.1 کے حوالے سے رائے / اپ ڈیٹ درخواست";
+  var txt = document.getElementById("fbText").value.trim() || "Offline POS v3.2 کے حوالے سے رائے / اپ ڈیٹ درخواست";
   window.open("https://wa.me923202609659?text=" + encodeURIComponent(txt), "_blank");
 }
 

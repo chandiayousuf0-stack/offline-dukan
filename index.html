@@ -3,20 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Dukan & Mandi POS (Offline v2.0)</title>
+<title>Smart Dukan & Mandi ERP (Offline v3.0)</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1976D2">
 <style>
   body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f6f9; margin: 0; padding: 12px; color: #222; }
   .card { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
   h2, h3, h4 { margin-top: 0; color: #1976D2; }
-  input, select { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
+  input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 15px; }
   button { width: 100%; padding: 12px; background: #1976D2; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
   button.green { background: #25D366; }
+  button.orange { background: #f57c00; }
   button.red { background: #d32f2f; }
   button.gray { background: #555; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .grid button { height: 90px; font-size: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .grid button { height: 92px; font-size: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+  .tabs button { padding: 9px 6px; font-size: 13px; background: #e3f2fd; color: #1976D2; }
+  .tabs button.active { background: #1976D2; color: #fff; }
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
   th, td { border-bottom: 1px solid #ddd; padding: 7px; text-align: right; }
   th { background: #e3f2fd; }
@@ -28,8 +32,8 @@
 <body>
 
 <div id="lockScreen" class="card">
-  <h2>🔐 Smart Dukan & Mandi POS (v2.0)</h2>
-  <p>مکمل آف لائن دکان و آڑھت مینجمنٹ سسٹم۔ ایپ چالو کرنے کے لیے اپنا <b>لائسنس کوڈ</b> درج کریں:</p>
+  <h2>🔐 Smart Dukan & Mandi ERP (v3.0)</h2>
+  <p>مکمل آف لائن دکان و آڑھت مینجمنٹ سسٹم۔ ایپ چالو کرنے کے لیے اپنا <b>خفیہ لائسنس کوڈ</b> درج کریں:</p>
   <div style="background:#fff3cd; padding:10px; border-radius:8px; margin-bottom:10px; font-size:14px;">
     💳 <b>لائسنس کوڈ فیس (100 روپے):</b><br>
     JazzCash / EasyPaisa: <b>0320-2609659</b> (Muhammad Younis)
@@ -43,59 +47,50 @@
   <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
     <div>
       <h3 id="shopHeader" style="margin:0;">🛒 میری دکان</h3>
-      <span class="badge">⚡ 100% آف لائن موڈ (v2.0)</span>
+      <span class="badge">⚡ 100% آف لائن موڈ (v3.0)</span>
     </div>
     <button id="homeBtn" class="gray hidden" style="width:auto; padding:8px 14px;" onclick="showPage('home')">🏠 ہوم</button>
   </div>
 
   <div id="page_home" class="card">
-    <h3>📌 مین ڈیش بورڈ</h3>
+    <h3>📌 مین ڈیش بورڈ — کام منتخب کریں:</h3>
     <div class="grid">
-      <button onclick="showPage('billing')">🧾<br>کسٹمر بلنگ<br>(مقررہ یا موقع کا ریٹ)</button>
+      <button onclick="showPage('billing')">🧾<br>کسٹمر بلنگ<br>(کاپی، واٹس ایپ و پرنٹ)</button>
       <button onclick="showPage('purchase')">🚚<br>سپلائر خریداری بل<br>(نقد + ادھار تقسیم)</button>
+      <button onclick="showPage('khata')">📒<br>کسٹمر ادھار کھاتہ<br>(فہرست و مکمل ہسٹری)</button>
       <button onclick="showPage('stock')">📦<br>موجودہ اسٹاک<br>(پرانا مال درج کریں)</button>
-      <button onclick="showPage('khata')">📒<br>کسٹمر ادھار کھاتہ<br>(لینی باقی رقم)</button>
-      <button onclick="showPage('pnl')">📈<br>نفع و نقصان<br>مکمل حساب</button>
-      <button onclick="showPage('backup')">💾<br>بیک اپ و<br>لاگ آؤٹ</button>
+      <button onclick="showPage('pnl')">📈<br>نفع و نقصان<br>مکمل کاروباری حساب</button>
+      <button onclick="showPage('backup')">🆕<br>اپ ڈیٹ تفصیل، بیک اپ<br>و رائے (Feedback)</button>
     </div>
+    <hr style="margin:14px 0; border:0; border-top:1px solid #eee;">
+    <button class="red" onclick="logoutApp()">🔒 ایپ لاک / لاگ آؤٹ کریں</button>
   </div>
 
-  <!-- صفحہ 1: بلنگ (مقررہ اور متغیر دونوں قیمتوں کے ساتھ) -->
+  <!-- صفحہ 1: کسٹمر بلنگ -->
   <div id="page_billing" class="card hidden">
     <h3>🧾 نیا کسٹمر بل بنائیں</h3>
     <select id="billItemSelect" onchange="onSelectBillItem()"></select>
-    <input type="number" id="billQty" placeholder="تعداد / وزن (من یا بوری)" value="1" min="0.1" step="any">
-    <input type="number" id="billSellPrice" placeholder="بیچنے کا ریٹ (موقع پر تبدیل کر سکتے ہیں)" step="any">
+    <input type="number" id="billQty" placeholder="تعداد / وزن درج کریں" value="1" min="0.1" step="any">
+    <input type="number" id="billSellPrice" placeholder="بیچنے کا ریٹ (موقع پر تبدیل بھی کر سکتے ہیں)" step="any">
     <button onclick="addToCart()">➕ بل میں شامل کریں</button>
     <div id="cartArea" class="hidden" style="margin-top:12px;">
-      <h4>تیار کردہ بل:</h4>
-      <pre id="billPreview" style="background:#f8f9fa; padding:10px; border-radius:8px; white-space:pre-wrap;"></pre>
-      <input type="text" id="custWaPhone" placeholder="گاہک کا واٹس ایپ نمبر (03001234567)">
+      <h4>📄 تیار کردہ بل (Receipt):</h4>
+      <pre id="billPreview" style="background:#f8f9fa; padding:10px; border-radius:8px; white-space:pre-wrap; border:1px dashed #999;"></pre>
+      <button class="orange" onclick="copyBillText()">📋 بل کاپی کریں (Copy Bill)</button>
+      <input type="text" id="custWaPhone" placeholder="گاہک کا واٹس ایپ نمبر (مثلاً 03001234567)" style="margin-top:8px;">
       <button class="green" onclick="sendBillWhatsApp()">🟢 واٹس ایپ پر بل بھیجیں</button>
       <button onclick="window.print()">🖨️ بل پرنٹ کریں</button>
-      <button class="red" onclick="clearCart()">🔄 نیا بل شروع کریں</button>
+      <button class="red" onclick="clearCart()">🔄 نیا بل شروع کریں (صاف کریں)</button>
     </div>
   </div>
 
-  <!-- صفحہ 2: موجودہ اسٹاک اور پرانا مال درج کرنے کا فارم -->
-  <div id="page_stock" class="card hidden">
-    <h3>📦 موجودہ اسٹاک (پرانا مال شامل کریں)</h3>
-    <p style="font-size:13px; color:#555;">دکان میں پہلے سے موجود سامان یا گندم وغیرہ یہاں درج کریں (قیمتِ فروخت خالی چھوڑ سکتے ہیں):</p>
-    <input type="text" id="stName" placeholder="چیز / جنس کا نام (مثلاً گندم، چینی)">
-    <input type="number" id="stQty" placeholder="موجودہ تعداد / وزن" step="any">
-    <input type="number" id="stBuy" placeholder="فی یونٹ قیمتِ خرید (لازمی)" step="any">
-    <input type="number" id="stSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - آڑھت کے لیے خالی چھوڑیں)" step="any">
-    <button onclick="addDirectStock()">💾 اسٹاک میں شامل کریں</button>
-    <table id="stockTable"><thead><tr><th>چیز</th><th>خرید</th><th>فروخت</th><th>بقایا</th></tr></thead><tbody></tbody></table>
-  </div>
-  <!-- صفحہ 3: سپلائر مجموعی بل (کچھ نقد + کچھ ادھار) -->
+  <!-- صفحہ 2: سپلائر مجموعی خریداری بل -->
   <div id="page_purchase" class="card hidden">
     <h3>🚚 سپلائر / زمیندار خریداری بل</h3>
-    <p style="font-size:13px; color:#555;">پہلے تمام خریدی گئی چیزیں فہرست میں ڈالیں، پھر نیچے کل بل میں سے نقد اور ادھار درج کریں:</p>
-    <input type="text" id="purItem" placeholder="چیز / جنس کا نام">
-    <input type="number" id="purQty" placeholder="مقدار / تعداد" step="any">
-    <input type="number" id="purBuy" placeholder="فی یونٹ قیمتِ خرید" step="any">
-    <input type="number" id="purSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - خالی چھوڑ سکتے ہیں)" step="any">
+    <input type="text" id="purItem" placeholder="چیز / جنس کا نام (لازمی)">
+    <input type="number" id="purQty" placeholder="تعداد / وزن" step="any">
+    <input type="number" id="purBuy" placeholder="فی یونٹ قیمتِ خرید (لازمی)" step="any">
+    <input type="number" id="purSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - آڑھت کے لیے خالی چھوڑیں)" step="any">
     <button class="gray" onclick="addPurItem()">➕ خریداری بل میں چیز ڈالیں</button>
 
     <div id="purCartBox" class="hidden" style="background:#f8f9fa; padding:10px; border-radius:8px; margin-top:10px; border:1px solid #ddd;">
@@ -103,54 +98,96 @@
       <table id="purCartTable"><thead><tr><th>چیز</th><th>مقدار</th><th>ریٹ</th><th>کل</th></tr></thead><tbody></tbody></table>
       <h4 id="purGrandTotal" style="margin-top:8px;">کل بل: 0 روپے</h4>
       <input type="text" id="supName" placeholder="سپلائر / زمیندار کا نام (لازمی)">
-      <input type="number" id="purPaidCash" placeholder="اس بل میں سے کتنے نقد ادا کیے؟ (مثلاً 0 یا کچھ رقم)" step="any">
+      <input type="text" id="supPhone" placeholder="سپلائر کا فون نمبر (اختیاری)">
+      <input type="number" id="purPaidCash" placeholder="اس بل میں سے کتنے نقد ادا کیے؟" step="any">
       <button onclick="finalizePurchase()">✅ بل مکمل کریں (اسٹاک و کھاتہ اپ ڈیٹ)</button>
       <button class="red" onclick="clearPurCart()">❌ فہرست صاف کریں</button>
     </div>
 
-    <h4 style="margin-top:15px;">🏢 سپلائرز / زمینداروں کا بقایا کھاتہ:</h4>
-    <table id="supTable"><thead><tr><th>سپلائر</th><th>دینی باقی</th><th>عمل</th></tr></thead><tbody></tbody></table>
+    <h4 style="margin-top:15px;">🏢 سپلائرز کا بقایا کھاتہ:</h4>
+    <table id="supTable"><thead><tr><th>سپلائر</th><th>فون</th><th>دینی باقی</th><th>عمل</th></tr></thead><tbody></tbody></table>
+  </div>
+  <!-- صفحہ 3: کسٹمر ادھار کھاتہ (3 مکمل ٹیبز کے ساتھ) -->
+  <div id="page_khata" class="card hidden">
+    <h3>📒 اسمارٹ کسٹمر ادھار کھاتہ</h3>
+    <div class="tabs">
+      <button id="ktabBtn1" class="active" onclick="switchKhataTab(1)">🔄 ادھار / وصولی</button>
+      <button id="ktabBtn2" onclick="switchKhataTab(2)">➕ نیا گاہک</button>
+      <button id="ktabBtn3" onclick="switchKhataTab(3)">📜 مکمل ہسٹری</button>
+    </div>
+
+    <!-- ٹیب 1: فہرست سے گاہک چن کر ادھار یا وصولی -->
+    <div id="ktab1">
+      <p style="font-size:13px; color:#555;">پہلے سے رجسٹرڈ گاہک کا نام فہرست سے منتخب کریں:</p>
+      <select id="existingCustSelect" onchange="showSelectedCustInfo()"></select>
+      <div id="selectedCustCard" class="stat-box hidden"></div>
+      <select id="kType">
+        <option value="add">مزید ادھار دیں (+)</option>
+        <option value="sub">رقم وصول کریں (-)</option>
+      </select>
+      <input type="number" id="kAmount" placeholder="رقم درج کریں (روپے)" step="any">
+      <button onclick="updateExistingKhata()">💾 کھاتہ اپ ڈیٹ کریں</button>
+    </div>
+
+    <!-- ٹیب 2: نیا گاہک رجسٹر کریں -->
+    <div id="ktab2" class="hidden">
+      <input type="text" id="newCName" placeholder="نئے گاہک کا پورا نام (لازمی)">
+      <input type="text" id="newCPhone" placeholder="واٹس ایپ نمبر (مثلاً 03001234567)">
+      <input type="number" id="newCInit" placeholder="ابتدائی ادھار رقم (اگر کوئی ہے)" step="any">
+      <button onclick="registerNewCustomer()">✅ نیا گاہک محفوظ کریں</button>
+    </div>
+
+    <!-- ٹیب 3: گاہک کی مکمل تاریخ و بقایا -->
+    <div id="ktab3" class="hidden">
+      <div id="totalMarketUdharBox" class="stat-box"></div>
+      <select id="ledgerCustSelect" onchange="renderCustomerLedger()"></select>
+      <div id="custLedgerSummary" style="margin-top:8px;"></div>
+      <table id="ledgerHistoryTable"><thead><tr><th>تاریخ و وقت</th><th>تفصیل</th><th>رقم</th></tr></thead><tbody></tbody></table>
+      <button class="green" id="sendLedgerWaBtn" style="margin-top:10px;" onclick="sendFullLedgerWa()">📲 پورا کھاتہ واٹس ایپ کریں</button>
+    </div>
   </div>
 
-  <!-- صفحہ 4: کسٹمر ادھار کھاتہ -->
-  <div id="page_khata" class="card hidden">
-    <h3>📒 کسٹمر ادھار کھاتہ</h3>
-    <input type="text" id="kName" placeholder="گاہک کا نام">
-    <input type="text" id="kPhone" placeholder="واٹس ایپ نمبر (03001234567)">
-    <input type="number" id="kAmount" placeholder="رقم درج کریں" step="any">
-    <select id="kType">
-      <option value="add">ادھار دیا (+)</option>
-      <option value="sub">رقم وصول کی (-)</option>
-    </select>
-    <button onclick="updateKhata()">💾 کھاتہ اپ ڈیٹ کریں</button>
-    <table id="khataTable"><thead><tr><th>گاہک</th><th>فون</th><th>بقایا</th><th>واٹس ایپ</th></tr></thead><tbody></tbody></table>
+  <!-- صفحہ 4: موجودہ اسٹاک -->
+  <div id="page_stock" class="card hidden">
+    <h3>📦 موجودہ اسٹاک (پرانا مال شامل کریں)</h3>
+    <input type="text" id="stName" placeholder="چیز / جنس کا نام (لازمی)">
+    <input type="number" id="stQty" placeholder="موجودہ تعداد / وزن" step="any">
+    <input type="number" id="stBuy" placeholder="فی یونٹ قیمتِ خرید (لازمی)" step="any">
+    <input type="number" id="stSell" placeholder="فی یونٹ قیمتِ فروخت (اختیاری - آڑھت کے لیے خالی چھوڑیں)" step="any">
+    <button onclick="addDirectStock()">💾 اسٹاک میں شامل کریں</button>
+    <table id="stockTable"><thead><tr><th>چیز</th><th>خرید</th><th>فروخت</th><th>بقایا</th></tr></thead><tbody></tbody></table>
   </div>
 
   <!-- صفحہ 5: نفع و نقصان -->
   <div id="page_pnl" class="card hidden">
-    <h3>📈 نفع و نقصان اور کاروباری خلاصہ</h3>
+    <h3>📈 نفع و نقصان اور مکمل کاروباری حساب</h3>
     <div id="pnlSummary"></div>
   </div>
 
-  <!-- صفحہ 6: بیک اپ، رائے اور لاگ آؤٹ -->
+  <!-- صفحہ 6: اپ ڈیٹ لاگ، بیک اپ و رائے -->
   <div id="page_backup" class="card hidden">
-    <h3>💾 ڈیٹا بیک اپ و سیٹنگز</h3>
-    <button onclick="downloadBackup()">⬇️ بیک اپ فائل ڈاؤن لوڈ کریں</button>
-    <input type="file" id="restoreFile" accept=".json" onchange="restoreBackup(event)" style="margin-top:10px;">
+    <h3>🆕 ورژن 3.0 اپ ڈیٹ تفصیل و بیک اپ</h3>
+    <div style="background:#e3f2fd; padding:10px; border-radius:8px; font-size:13px; margin-bottom:12px;">
+      <b>نئی اپ ڈیٹس (v3.0):</b><br>
+      • <b>مکمل کھاتہ ہسٹری:</b> اب گاہک کا نام ایک بار درج کریں، وصولی فہرست سے چن کر کریں اور تاریخ و وقت کے ساتھ مکمل لیجر دیکھیں۔<br>
+      • <b>بل کاپی بٹن:</b> اب بلنگ میں فوری کاپی، واٹس ایپ اور پرنٹ تینوں بٹن موجود ہیں۔<br>
+      • <b>آڑھت و سپلائر بل:</b> مجموعی خریداری بل (نقد + ادھار) اور موقع کے ریٹ پر بلنگ۔
+    </div>
+    <button onclick="downloadBackup()">⬇️ ڈیٹا بیک اپ ڈاؤن لوڈ کریں</button>
+    <p style="font-size:13px; margin:8px 0 2px;">پرانا بیک اپ واپس بحال کریں:</p>
+    <input type="file" id="restoreFile" accept=".json" onchange="restoreBackup(event)">
     <hr>
-    <button class="green" onclick="sendFeedbackWa()">💬 ایڈمن کو رائے یا اپ ڈیٹ درخواست بھیجیں</button>
-    <hr>
-    <button class="red" onclick="logoutApp()">🔒 ایپ لاک / لاگ آؤٹ کریں</button>
+    <textarea id="fbText" rows="3" placeholder="ایپ کے بارے میں اپنی رائے یا نئی اپ ڈیٹ کی فرمائش لکھیں..."></textarea>
+    <button class="green" onclick="sendFeedbackWa()">💬 ایڈمن کو واٹس ایپ پر رائے بھیجیں</button>
   </div>
 </div>
 <script>
 function isValidUniqueKey(k) {
   if (!/^PK-[0-9]{4}$/.test(k)) return false;
-  const digits = k.slice(3).split('').map(Number);
-  return digits.reduce((a, b) => a + b, 0) === 19;
+  return k.slice(3).split('').map(Number).reduce((a, b) => a + b, 0) === 19;
 }
 
-let db = JSON.parse(localStorage.getItem("smart_pos_db")) || { stock: [], khata: [], suppliers: [], salesTotal: 0, profitTotal: 0 };
+let db = JSON.parse(localStorage.getItem("smart_pos_db_v3")) || { stock: [], khata: [], khataHistory: [], suppliers: [], salesTotal: 0, profitTotal: 0 };
 let cart = [];
 let purCart = [];
 
@@ -180,7 +217,7 @@ function activateApp() {
 }
 
 function logoutApp() {
-  if (confirm("کیا آپ واقعی ایپ لاک / لاگ آؤٹ کرنا چاہتے ہیں؟ (آپ کا ڈیٹا محفوظ رہے گا)")) {
+  if (confirm("کیا آپ واقعی ایپ لاک / لاگ آؤٹ کرنا چاہتے ہیں؟ (آپ کا سارا ڈیٹا محفوظ رہے گا)")) {
     localStorage.removeItem("pos_license_key");
     location.reload();
   }
@@ -188,11 +225,10 @@ function logoutApp() {
 
 function sendKeyReq() {
   const shop = document.getElementById("shopInput").value.trim() || "نئی دکان";
-  const msg = encodeURIComponent(`السلام علیکم! مجھے اپنی دکان (${shop}) کے لیے Offline POS v2.0 کا لائسنس کوڈ چاہیے۔`);
-  window.open(`https://wa.me{msg}`, "_blank");
+  window.open(`https://wa.me{encodeURIComponent(`السلام علیکم! مجھے اپنی دکان (${shop}) کے لیے Offline POS v3.0 کا لائسنس کوڈ چاہیے۔`)}`, "_blank");
 }
 
-function saveDB() { localStorage.setItem("smart_pos_db", JSON.stringify(db)); }
+function saveDB() { localStorage.setItem("smart_pos_db_v3", JSON.stringify(db)); }
 
 function showPage(page) {
   document.querySelectorAll("[id^='page_']").forEach(el => el.classList.add("hidden"));
@@ -200,7 +236,7 @@ function showPage(page) {
   document.getElementById("homeBtn").classList.toggle("hidden", page === "home");
   if (page === "billing") renderBilling();
   if (page === "purchase") renderSuppliers();
-  if (page === "khata") renderKhata();
+  if (page === "khata") { switchKhataTab(1); }
   if (page === "stock") renderStock();
   if (page === "pnl") renderPnL();
 }
@@ -211,18 +247,13 @@ function addDirectStock() {
   const buy = parseFloat(document.getElementById("stBuy").value);
   const sellVal = document.getElementById("stSell").value.trim();
   const sell = sellVal ? parseFloat(sellVal) : 0;
-
   if (!name || !qty || !buy) return alert("چیز کا نام، مقدار اور قیمتِ خرید لازمی لکھیں!");
-  let exItem = db.stock.find(i => i.name.toLowerCase() === name.toLowerCase());
-  if (exItem) { exItem.qty += qty; exItem.buy = buy; if (sell > 0) exItem.sell = sell; }
+  let ex = db.stock.find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (ex) { ex.qty += qty; ex.buy = buy; if (sell > 0) ex.sell = sell; }
   else { db.stock.push({ name, qty, buy, sell }); }
-
   saveDB();
-  document.getElementById("stName").value = "";
-  document.getElementById("stQty").value = "";
-  document.getElementById("stBuy").value = "";
-  document.getElementById("stSell").value = "";
-  alert("✅ موجودہ اسٹاک محفوظ ہو گیا!");
+  ["stName","stQty","stBuy","stSell"].forEach(id => document.getElementById(id).value = "");
+  alert("✅ اسٹاک محفوظ ہو گیا!");
   renderStock();
 }
 
@@ -232,13 +263,9 @@ function addPurItem() {
   const buy = parseFloat(document.getElementById("purBuy").value);
   const sellVal = document.getElementById("purSell").value.trim();
   const sell = sellVal ? parseFloat(sellVal) : 0;
-
-  if (!item || !qty || !buy) return alert("چیز کا نام، مقدار اور قیمتِ خرید لازمی لکھیں!");
+  if (!item || !qty || !buy) return alert("چیز کا نام، مقدار اور قیمتِ خرید لکھیں!");
   purCart.push({ item, qty, buy, sell, total: qty * buy });
-  document.getElementById("purItem").value = "";
-  document.getElementById("purQty").value = "";
-  document.getElementById("purBuy").value = "";
-  document.getElementById("purSell").value = "";
+  ["purItem","purQty","purBuy","purSell"].forEach(id => document.getElementById(id).value = "");
   renderPurCart();
 }
 
@@ -247,10 +274,7 @@ function renderPurCart() {
   if (!purCart.length) { box.classList.add("hidden"); return; }
   box.classList.remove("hidden");
   let grand = 0;
-  document.querySelector("#purCartTable tbody").innerHTML = purCart.map(p => {
-    grand += p.total;
-    return `<tr><td>${p.item}</td><td>${p.qty}</td><td>${p.buy}</td><td>${p.total}</td></tr>`;
-  }).join("");
+  document.querySelector("#purCartTable tbody").innerHTML = purCart.map(p => { grand += p.total; return `<tr><td>${p.item}</td><td>${p.qty}</td><td>${p.buy}</td><td>${p.total}</td></tr>`; }).join("");
   document.getElementById("purGrandTotal").innerText = `کل بل: ${grand} روپے`;
 }
 
@@ -258,41 +282,30 @@ function clearPurCart() { purCart = []; renderPurCart(); }
 
 function finalizePurchase() {
   const sup = document.getElementById("supName").value.trim();
+  const phone = document.getElementById("supPhone").value.trim();
   const paidCash = parseFloat(document.getElementById("purPaidCash").value) || 0;
-  if (!sup) return alert("سپلائر یا زمیندار کا نام لکھیں!");
-  if (!purCart.length) return alert("بل میں کم از کم ایک چیز شامل کریں!");
-
+  if (!sup) return alert("سپلائر کا نام لکھیں!");
   let grandTotal = 0;
   purCart.forEach(p => {
     grandTotal += p.total;
-    let exItem = db.stock.find(i => i.name.toLowerCase() === p.item.toLowerCase());
-    if (exItem) {
-      exItem.qty += p.qty;
-      exItem.buy = p.buy;
-      if (p.sell > 0) exItem.sell = p.sell;
-    } else {
-      db.stock.push({ name: p.item, qty: p.qty, buy: p.buy, sell: p.sell });
-    }
+    let ex = db.stock.find(i => i.name.toLowerCase() === p.item.toLowerCase());
+    if (ex) { ex.qty += p.qty; ex.buy = p.buy; if (p.sell > 0) ex.sell = p.sell; }
+    else { db.stock.push({ name: p.item, qty: p.qty, buy: p.buy, sell: p.sell }); }
   });
-
-  const remainingDebt = Math.max(0, grandTotal - paidCash);
-  if (remainingDebt > 0) {
+  const rem = Math.max(0, grandTotal - paidCash);
+  if (rem > 0) {
     let exSup = db.suppliers.find(s => s.name.toLowerCase() === sup.toLowerCase());
-    if (exSup) exSup.payable += remainingDebt;
-    else db.suppliers.push({ name: sup, payable: remainingDebt });
+    if (exSup) { exSup.payable += rem; if (phone) exSup.phone = phone; }
+    else { db.suppliers.push({ name: sup, phone, payable: rem }); }
   }
-
-  saveDB();
-  purCart = [];
-  document.getElementById("supName").value = "";
-  document.getElementById("purPaidCash").value = "";
-  renderPurCart();
-  renderSuppliers();
-  alert(`✅ بل محفوظ ہو گیا! کل بل: ${grandTotal} | نقد ادا: ${paidCash} | ادھار باقی: ${remainingDebt} روپے`);
+  saveDB(); purCart = [];
+  ["supName","supPhone","purPaidCash"].forEach(id => document.getElementById(id).value = "");
+  renderPurCart(); renderSuppliers();
+  alert(`✅ بل محفوظ! کل: ${grandTotal} | نقد: ${paidCash} | ادھار باقی: ${rem} روپے`);
 }
 function renderSuppliers() {
   document.querySelector("#supTable tbody").innerHTML = db.suppliers.map((s, idx) =>
-    `<tr><td>${s.name}</td><td><b>${s.payable} روپے</b></td><td><button style="padding:4px;" onclick="paySup(${idx})">رقم ادا کریں</button></td></tr>`
+    `<tr><td>${s.name}</td><td>${s.phone || '-'}</td><td><b>${s.payable} روپے</b></td><td><button style="padding:4px;" onclick="paySup(${idx})">ادا کریں</button></td></tr>`
   ).join("");
 }
 
@@ -304,44 +317,33 @@ function paySup(idx) {
 function renderBilling() {
   const sel = document.getElementById("billItemSelect");
   const avail = db.stock.filter(i => i.qty > 0);
-  sel.innerHTML = avail.map((i, idx) => {
-    const rateTxt = i.sell > 0 ? `ریٹ: ${i.sell}` : "ریٹ موقع پر طے ہوگا";
-    return `<option value="${idx}">${i.name} (${rateTxt} | اسٹاک: ${i.qty})</option>`;
-  }).join("");
+  sel.innerHTML = avail.map((i, idx) => `<option value="${idx}">${i.name} (${i.sell > 0 ? 'ریٹ: ' + i.sell : 'موقع کا ریٹ'} | اسٹاک: ${i.qty})</option>`).join("");
   onSelectBillItem();
 }
 
 function onSelectBillItem() {
   const avail = db.stock.filter(i => i.qty > 0);
-  const idx = document.getElementById("billItemSelect").value;
-  const item = avail[idx];
-  const priceBox = document.getElementById("billSellPrice");
+  const item = avail[document.getElementById("billItemSelect").value];
+  const pBox = document.getElementById("billSellPrice");
   if (item) {
-    priceBox.value = item.sell > 0 ? item.sell : "";
-    priceBox.placeholder = item.sell > 0 ? `مقررہ ریٹ: ${item.sell} (تبدیل بھی کر سکتے ہیں)` : `خرید: ${item.buy} — یہاں بیچنے کا ریٹ لکھیں`;
+    pBox.value = item.sell > 0 ? item.sell : "";
+    pBox.placeholder = item.sell > 0 ? `مقررہ ریٹ: ${item.sell}` : `خرید: ${item.buy} — یہاں بیچنے کا ریٹ لکھیں`;
   }
 }
 
 function addToCart() {
-  const available = db.stock.filter(i => i.qty > 0);
-  const idx = document.getElementById("billItemSelect").value;
+  const avail = db.stock.filter(i => i.qty > 0);
+  const item = avail[document.getElementById("billItemSelect").value];
   const qty = parseFloat(document.getElementById("billQty").value);
   const sellPrice = parseFloat(document.getElementById("billSellPrice").value);
-  const item = available[idx];
-
   if (!item || !qty || qty > item.qty) return alert("اتنا اسٹاک موجود نہیں!");
-  if (!sellPrice || sellPrice <= 0) return alert("براہ کرم بیچنے کا ریٹ (قیمتِ فروخت) درج کریں!");
-
+  if (!sellPrice || sellPrice <= 0) return alert("بیچنے کا ریٹ درج کریں!");
   item.qty -= qty;
   const total = sellPrice * qty;
-  const profit = (sellPrice - item.buy) * qty;
   db.salesTotal += total;
-  db.profitTotal += profit;
-
+  db.profitTotal += (sellPrice - item.buy) * qty;
   cart.push({ name: item.name, qty, price: sellPrice, total });
-  saveDB();
-  renderBilling();
-  updateBillPreview();
+  saveDB(); renderBilling(); updateBillPreview();
 }
 
 function updateBillPreview() {
@@ -349,10 +351,15 @@ function updateBillPreview() {
   const shop = localStorage.getItem("pos_shop_name");
   const dt = new Date().toLocaleString('en-PK');
   let grand = 0;
-  let lines = [`🏪 *${shop}*`, `📅 ${dt}`, "━━━━━━━━━━━━"];
-  cart.forEach(c => { lines.push(`• ${c.name} (${c.qty}x${c.price}) = ${c.total} روپے`); grand += c.total; });
-  lines.push("━━━━━━━━━━━━", `💰 *کل رقم: ${grand} روپے*`, "شکریہ!");
+  let lines = [`🏪 *${shop}*`, `📅 تاریخ و وقت: ${dt}`, "━━━━━━━━━━━━━━"];
+  cart.forEach(c => { lines.push(`• ${c.name} (${c.qty} x ${c.price}) = ${c.total} روپے`); grand += c.total; });
+  lines.push("━━━━━━━━━━━━━━", `💰 *کل رقم: ${grand} روپے*`, "شکریہ! دوبارہ تشریف لائیں۔");
   document.getElementById("billPreview").innerText = lines.join("\n");
+}
+
+function copyBillText() {
+  const txt = document.getElementById("billPreview").innerText;
+  navigator.clipboard.writeText(txt).then(() => alert("✅ پورا بل کاپی ہو گیا ہے! اب آپ کہیں بھی پیسٹ کر سکتے ہیں۔"));
 }
 
 function sendBillWhatsApp() {
@@ -363,34 +370,121 @@ function sendBillWhatsApp() {
 }
 
 function clearCart() { cart = []; document.getElementById("cartArea").classList.add("hidden"); }
-
-function updateKhata() {
-  const name = document.getElementById("kName").value.trim();
-  const phone = document.getElementById("kPhone").value.trim();
-  const amt = parseFloat(document.getElementById("kAmount").value);
-  const type = document.getElementById("kType").value;
-  if (!name || !amt) return alert("نام اور رقم لکھیں!");
-  let c = db.khata.find(x => x.name.toLowerCase() === name.toLowerCase());
-  if (!c) { c = { name, phone, balance: 0 }; db.khata.push(c); }
-  if (phone) c.phone = phone;
-  c.balance = type === "add" ? c.balance + amt : Math.max(0, c.balance - amt);
-  saveDB(); renderKhata();
+function switchKhataTab(n) {
+  [1, 2, 3].forEach(i => {
+    document.getElementById("ktab" + i).classList.toggle("hidden", i !== n);
+    document.getElementById("ktabBtn" + i).classList.toggle("active", i === n);
+  });
+  if (n === 1) populateExistingCustDropdown();
+  if (n === 3) populateLedgerDropdown();
 }
 
-function renderKhata() {
-  document.querySelector("#khataTable tbody").innerHTML = db.khata.map(c => {
-    let ph = (c.phone || "").replace(/[^0-9]/g, "");
-    if (ph.startsWith("03")) ph = "92" + ph.substring(1);
-    const msg = encodeURIComponent(`السلام علیکم ${c.name} صاحب، آپ کے ذمہ بقایا ادھار رقم ${c.balance} روپے ہے۔ شکریہ!`);
-    return `<tr><td>${c.name}</td><td>${c.phone}</td><td><b>${c.balance}</b></td><td><a href="https://wa.me{ph}?text=${msg}" target="_blank">📲 بھیجیں</a></td></tr>`;
-  }).join("");
+function populateExistingCustDropdown() {
+  const sel = document.getElementById("existingCustSelect");
+  if (!db.khata.length) {
+    sel.innerHTML = `<option value="">کوئی گاہک رجسٹرڈ نہیں (پہلے 'نیا گاہک' ٹیب میں جائیں)</option>`;
+    document.getElementById("selectedCustCard").classList.add("hidden");
+    return;
+  }
+  sel.innerHTML = db.khata.map((c, idx) => `<option value="${idx}">${c.name} (${c.phone || 'بغیر فون'})</option>`).join("");
+  showSelectedCustInfo();
+}
+
+function showSelectedCustInfo() {
+  const idx = document.getElementById("existingCustSelect").value;
+  const card = document.getElementById("selectedCustCard");
+  if (idx === "" || !db.khata[idx]) { card.classList.add("hidden"); return; }
+  const c = db.khata[idx];
+  card.classList.remove("hidden");
+  card.innerHTML = `👤 <b>${c.name}</b> | 📞 ${c.phone || '-'} | 💰 موجودہ بقایا: <b>${c.balance} روپے</b>`;
+}
+
+function registerNewCustomer() {
+  const name = document.getElementById("newCName").value.trim();
+  const phone = document.getElementById("newCPhone").value.trim();
+  const initAmt = parseFloat(document.getElementById("newCInit").value) || 0;
+  if (!name) return alert("گاہک کا نام لکھنا لازمی ہے!");
+  if (db.khata.some(c => c.name.toLowerCase() === name.toLowerCase())) return alert("یہ گاہک پہلے سے رجسٹرڈ ہے! پہلے ٹیب میں جا کر اس کا نام منتخب کریں۔");
+
+  db.khata.push({ name, phone, balance: initAmt });
+  if (initAmt > 0) {
+    db.khataHistory.push({ name, type: "ادھار لیا (+)", amount: initAmt, dt: new Date().toLocaleString('en-PK') });
+  }
+  saveDB();
+  ["newCName","newCPhone","newCInit"].forEach(id => document.getElementById(id).value = "");
+  alert(`✅ گاہک '${name}' رجسٹر ہو گیا!`);
+  switchKhataTab(1);
+}
+
+function updateExistingKhata() {
+  const idx = document.getElementById("existingCustSelect").value;
+  const amt = parseFloat(document.getElementById("kAmount").value);
+  const type = document.getElementById("kType").value;
+  if (idx === "" || !db.khata[idx]) return alert("پہلے گاہک منتخب کریں!");
+  if (!amt || amt <= 0) return alert("درست رقم درج کریں!");
+
+  const c = db.khata[idx];
+  c.balance = type === "add" ? c.balance + amt : Math.max(0, c.balance - amt);
+  db.khataHistory.push({
+    name: c.name,
+    type: type === "add" ? "ادھار لیا (+)" : "رقم جمع کروائی (-)",
+    amount: amt,
+    dt: new Date().toLocaleString('en-PK')
+  });
+  saveDB();
+  document.getElementById("kAmount").value = "";
+  showSelectedCustInfo();
+  alert(`✅ ${c.name} کا نیا بقایا ${c.balance} روپے ہو گیا ہے!`);
+}
+
+function populateLedgerDropdown() {
+  const totMarket = db.khata.reduce((a, b) => a + b.balance, 0);
+  document.getElementById("totalMarketUdharBox").innerHTML = `💰 مارکیٹ میں کل لینی باقی رقم: <b>${totMarket} روپے</b>`;
+  const sel = document.getElementById("ledgerCustSelect");
+  if (!db.khata.length) { sel.innerHTML = `<option value="">کوئی کھاتہ موجود نہیں</option>`; return; }
+  sel.innerHTML = db.khata.map((c, idx) => `<option value="${idx}">${c.name} — بقایا: ${c.balance} روپے</option>`).join("");
+  renderCustomerLedger();
+}
+
+function renderCustomerLedger() {
+  const idx = document.getElementById("ledgerCustSelect").value;
+  if (idx === "" || !db.khata[idx]) return;
+  const c = db.khata[idx];
+  const hist = db.khataHistory.filter(h => h.name.toLowerCase() === c.name.toLowerCase());
+  const totTaken = hist.filter(h => h.type.includes("+")).reduce((a, b) => a + b.amount, 0);
+  const totPaid = hist.filter(h => h.type.includes("-")).reduce((a, b) => a + b.amount, 0);
+
+  document.getElementById("custLedgerSummary").innerHTML = `
+    <div class="stat-box" style="font-size:13px;">
+      کل ادھار: <b>${totTaken}</b> | کل جمع: <b>${totPaid}</b> | <b>موجودہ بقایا: ${c.balance} روپے</b>
+    </div>`;
+  document.querySelector("#ledgerHistoryTable tbody").innerHTML = hist.map(h =>
+    `<tr><td>${h.dt}</td><td>${h.type}</td><td><b>${h.amount}</b></td></tr>`
+  ).join("");
+}
+
+function sendFullLedgerWa() {
+  const idx = document.getElementById("ledgerCustSelect").value;
+  if (idx === "" || !db.khata[idx]) return;
+  const c = db.khata[idx];
+  const shop = localStorage.getItem("pos_shop_name");
+  const hist = db.khataHistory.filter(h => h.name.toLowerCase() === c.name.toLowerCase());
+  const totTaken = hist.filter(h => h.type.includes("+")).reduce((a, b) => a + b.amount, 0);
+  const totPaid = hist.filter(h => h.type.includes("-")).reduce((a, b) => a + b.amount, 0);
+
+  let ph = (c.phone || "").replace(/[^0-9]/g, "");
+  if (ph.startsWith("03")) ph = "92" + ph.substring(1);
+  const msg = encodeURIComponent(
+    `السلام علیکم ${c.name} صاحب،\n*${shop}* کی طرف سے آپ کے کھاتے کی تفصیل:\n` +
+    `• کل ادھار: ${totTaken} روپے\n• کل جمع شدہ: ${totPaid} روپے\n• *موجودہ بقایا رقم: ${c.balance} روپے*\nبراہ کرم جلد ادائیگی کر دیں۔ شکریہ!`
+  );
+  window.open(ph ? `https://wa.me{ph}?text=${msg}` : `https://wa.me{msg}`, "_blank");
 }
 
 function renderStock() {
-  document.querySelector("#stockTable tbody").innerHTML = db.stock.map(i => {
-    const sellTxt = i.sell > 0 ? i.sell : "<i>موقع پر طے</i>";
-    return `<tr><td>${i.name}</td><td>${i.buy}</td><td>${sellTxt}</td><td><b>${i.qty}</b></td></tr>`;
-  }).join("");
+  document.querySelector("#stockTable tbody").innerHTML = db.stock.map(i =>
+    `<tr><td>${i.name}</td><td>${i.buy}</td><td>${i.sell > 0 ? i.sell : '<i>موقع پر طے</i>'}</td><td><b>${i.qty}</b></td></tr>`
+  ).join("");
 }
 
 function renderPnL() {
@@ -400,8 +494,9 @@ function renderPnL() {
   document.getElementById("pnlSummary").innerHTML = `
     <div class="stat-box">💰 گاہکوں سے لینی باقی: <b>${custRec} روپے</b></div>
     <div class="stat-box">💸 سپلائرز کو دینی باقی: <b>${supPay} روپے</b></div>
-    <div class="stat-box">📦 موجودہ اسٹاک مالیت: <b>${stockVal} روپے</b></div>
+    <div class="stat-box">📦 موجودہ اسٹاک مالیت (خرید): <b>${stockVal} روپے</b></div>
     <div class="stat-box" style="background:#e8f5e9;">✨ کل حاصل شدہ منافع: <b>${db.profitTotal} روپے</b></div>
+    <div class="stat-box" style="background:#fff3cd;">🏦 مجموعی کاروباری پوزیشن: <b>${(custRec + stockVal) - supPay} روپے</b></div>
   `;
 }
 
@@ -409,19 +504,19 @@ function downloadBackup() {
   const blob = new Blob([JSON.stringify(db)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "dukan_backup.json";
+  a.download = "smart_dukan_backup.json";
   a.click();
 }
 
 function restoreBackup(e) {
   const reader = new FileReader();
   reader.onload = function() { db = JSON.parse(reader.result); saveDB(); alert("✅ بیک اپ بحال ہو گیا!"); location.reload(); };
-  reader.readAsText(e.target.files);
+  reader.readAsText(e.target.files[0]);
 }
 
 function sendFeedbackWa() {
-  const msg = encodeURIComponent("السلام علیکم! Offline POS v2.0 کے حوالے سے میری رائے / اپ ڈیٹ کی درخواست:");
-  window.open(`https://wa.me{msg}`, "_blank");
+  const txt = document.getElementById("fbText").value.trim() || "Offline POS v3.0 کے حوالے سے رائے / اپ ڈیٹ درخواست";
+  window.open(`https://wa.me{encodeURIComponent(txt)}`, "_blank");
 }
 
 checkAuth();
